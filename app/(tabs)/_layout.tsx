@@ -1,9 +1,13 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import {
+  TabBarIcon,
+  TabBarIconFeather,
+  TabBarIconFA,
+} from "@/components/navigation/TabBarIcon";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,27 +15,62 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
+        initialParams={{ title: "Goals" }}
         options={{
-          title: 'Home',
+          title: "Goals",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIconFeather name="target" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="habbits"
+        initialParams={{ title: "Habbits" }}
         options={{
-          title: 'Explore',
+          title: "Habbits",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIconFA name="calendar-check-o" color={color} />
           ),
         }}
       />
+      <Tabs.Screen
+        name="statistics"
+        initialParams={{ title: "Goal & Habbits Stats" }}
+        options={{
+          title: "Statistics",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIconFeather name="pie-chart" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="partners"
+        initialParams={{ title: "Accountability Partners" }}
+        options={{
+          title: "Partners",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIconFeather name="users" color={color} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "code-slash" : "code-slash-outline"}
+              color={color}
+            />
+          ),
+        }}
+      /> */}
     </Tabs>
   );
 }
