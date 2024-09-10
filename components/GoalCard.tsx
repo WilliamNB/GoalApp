@@ -7,10 +7,7 @@ import {
   ProgressBar,
   Text,
 } from "react-native-paper";
-import Grid from "@mui/material/Grid";
 import { GoalProps } from "@/classes/Goal";
-import { Item } from "react-native-paper/lib/typescript/components/List/List";
-import { Paper, Typography } from "@mui/material";
 import { View } from "react-native";
 
 const GoalCard = (props: GoalProps) => (
