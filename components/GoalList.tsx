@@ -1,7 +1,6 @@
 import { Goal } from "@/classes/Goal";
 import React from "react";
 import GoalCard from "./GoalCard";
-import CardComponent from "./paper-components/CardComponent";
 import { View } from "react-native";
 
 interface GoalListProps {

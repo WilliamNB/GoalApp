@@ -1,19 +1,15 @@
 import * as React from "react";
 import { Text, View, StyleSheet, TextInput, Button } from "react-native";
-import { FAB, Modal, Portal } from "react-native-paper";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { ThemedText } from "./ThemedText";
+import { Modal, Portal } from "react-native-paper";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import Constants from "expo-constants";
 import { Milestone } from "@/classes/Milestone";
-import { Goal } from "@/classes/Goal";
 import { DatePickerModal } from "react-native-paper-dates";
 
 interface AddGoalProps {
   visible: boolean;
   onDismiss: () => void;
-  onTest: (data: any) => void;
+  addGoal: (data: any) => void;
 }
 
 interface UseFormInputs {
@@ -23,12 +19,10 @@ interface UseFormInputs {
   goalDate: Date;
 }
 
-const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, onTest }) => {
+const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
   const {
-    register,
-    setValue,
     handleSubmit,
     control,
     reset,
@@ -43,9 +37,9 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, onTest }) => {
   });
   const onSubmit = (data: any) => {
     console.log(data);
-    onTest(data);
-    reset();
+    addGoal(data);
     onDismiss();
+    reset();
   };
 
   const onChange = (arg: { nativeEvent: { text: any } }) => {
@@ -58,22 +52,6 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, onTest }) => {
     control,
     name: "milestones",
   });
-
-  // const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
-  // //const date = watch("goalDate");
-
-  // const showDatePicker = () => {
-  //   setDatePickerVisibility(true);
-  // };
-
-  // const hideDatePicker = () => {
-  //   setDatePickerVisibility(false);
-  // };
-
-  // const handleConfirm = (selectedDate: Date) => {
-  //   setValue("goalDate", selectedDate);
-  //   hideDatePicker();
-  // };
 
   const [date, setDate] = React.useState(undefined);
   const [open, setOpen] = React.useState(false);
@@ -89,7 +67,8 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, onTest }) => {
     },
     [setOpen, setDate]
   );
-
+  console.log("open", open);
+  console.log("date", date);
   console.log("errors", errors);
 
   return (

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { StyleSheet } from "react-native";
 import {
   Card,
   Divider,
@@ -7,14 +8,11 @@ import {
   ProgressBar,
   Text,
 } from "react-native-paper";
-import Grid from "@mui/material/Grid";
 import { GoalProps } from "@/classes/Goal";
-import { Item } from "react-native-paper/lib/typescript/components/List/List";
-import { Paper, Typography } from "@mui/material";
 import { View } from "react-native";
 
 const GoalCard = (props: GoalProps) => (
-  <Card>
+  <Card style={styles.goalCard}>
     <Card.Content>
       <Text variant="titleLarge">{props.goal.goal}</Text>
       <Divider />
@@ -44,5 +42,10 @@ const GoalCard = (props: GoalProps) => (
     <Divider />
   </Card>
 );
-
 export default GoalCard;
+
+const styles = StyleSheet.create({
+  goalCard: {
+    marginBottom: 16,
+  },
+});

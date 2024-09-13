@@ -2,7 +2,6 @@ import { Tabs } from "expo-router";
 import React from "react";
 
 import {
-  TabBarIcon,
   TabBarIconFeather,
   TabBarIconFA,
 } from "@/components/navigation/TabBarIcon";
@@ -24,7 +23,7 @@ export default function TabLayout() {
         initialParams={{ title: "Goals" }}
         options={{
           title: "Goals",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <TabBarIconFeather name="target" color={color} />
           ),
         }}
@@ -34,7 +33,7 @@ export default function TabLayout() {
         initialParams={{ title: "Habbits" }}
         options={{
           title: "Habbits",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <TabBarIconFA name="calendar-check-o" color={color} />
           ),
         }}
@@ -44,7 +43,7 @@ export default function TabLayout() {
         initialParams={{ title: "Goal & Habbits Stats" }}
         options={{
           title: "Statistics",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <TabBarIconFeather name="pie-chart" color={color} />
           ),
         }}
@@ -54,23 +53,11 @@ export default function TabLayout() {
         initialParams={{ title: "Accountability Partners" }}
         options={{
           title: "Partners",
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <TabBarIconFeather name="users" color={color} />
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="explore"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "code-slash" : "code-slash-outline"}
-              color={color}
-            />
-          ),
-        }}
-      /> */}
     </Tabs>
   );
 }
