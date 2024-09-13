@@ -1,4 +1,5 @@
 import * as React from "react";
+import { StyleSheet } from "react-native";
 import {
   Card,
   Divider,
@@ -11,7 +12,7 @@ import { GoalProps } from "@/classes/Goal";
 import { View } from "react-native";
 
 const GoalCard = (props: GoalProps) => (
-  <Card>
+  <Card style={styles.goalCard}>
     <Card.Content>
       <Text variant="titleLarge">{props.goal.goal}</Text>
       <Divider />
@@ -41,5 +42,10 @@ const GoalCard = (props: GoalProps) => (
     <Divider />
   </Card>
 );
-
 export default GoalCard;
+
+const styles = StyleSheet.create({
+  goalCard: {
+    marginBottom: 16,
+  },
+});
