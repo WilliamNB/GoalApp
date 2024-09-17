@@ -4,7 +4,12 @@ import { Modal, Portal } from "react-native-paper";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import Constants from "expo-constants";
 import { Milestone } from "@/classes/Milestone";
-import { DatePickerModal } from "react-native-paper-dates";
+import {
+  DatePickerModal,
+  enGB,
+  registerTranslation,
+} from "react-native-paper-dates";
+registerTranslation("en", enGB);
 
 interface AddGoalProps {
   visible: boolean;
@@ -53,7 +58,7 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
     name: "milestones",
   });
 
-  const [date, setDate] = React.useState(undefined);
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -70,6 +75,8 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   console.log("open", open);
   console.log("date", date);
   console.log("errors", errors);
+
+  const displayDate = date ? date.toLocaleDateString() : "Select a Date";
 
   return (
     <Portal>
@@ -93,7 +100,6 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           name="goal"
           rules={{ required: true }}
         />
-
         <Text style={styles.label}>Milestones</Text>
         {fields.map((field, index) => (
           <View key={field.id} style={styles.milestoneContainer}>
@@ -115,7 +121,6 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           title="Add Milestone"
           onPress={() => append({ milestone: "", completed: false })}
         />
-
         <Text style={styles.label}>Reward</Text>
         <Controller
           control={control}
@@ -130,9 +135,8 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           name="reward"
           rules={{ required: false }}
         />
-
         <Text style={styles.label}>Select a date to achieve the goal</Text>
-        <Button onPress={() => setOpen(true)} title="Select a Date"></Button>
+        <Button onPress={() => setOpen(true)} title={displayDate}></Button>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -148,7 +152,8 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           name="goalDate"
           rules={{ required: false }}
         />
-
+        <View style={styles.marginTop}></View>
+        {/*cant add style to button so need to add spacing this way */}
         <Button title="Submit" onPress={handleSubmit(onSubmit)} />
         {/* </View> */}
       </Modal>
@@ -197,6 +202,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 4,
     textAlign: "center",
+  },
+  marginTop: {
+    marginTop: 12,
   },
 });
 

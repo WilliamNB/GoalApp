@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import {
   Card,
+  Chip,
   Divider,
   List,
   MD3Colors,
@@ -10,38 +11,86 @@ import {
 } from "react-native-paper";
 import { GoalProps } from "@/classes/Goal";
 import { View } from "react-native";
+import { Milestone } from "@/classes/Milestone";
 
-const GoalCard = (props: GoalProps) => (
-  <Card style={styles.goalCard}>
-    <Card.Content>
-      <Text variant="titleLarge">{props.goal.goal}</Text>
+const GoalCard: React.FC<GoalProps> = (props) => {
+  // State to track the milestones
+  const [milestones, setMilestones] = React.useState<Milestone[]>(
+    props.goal.milestones
+  );
+
+  const completedMilestonesCount = milestones.filter(
+    (milestone) => milestone.completed
+  ).length;
+
+  // Handler to mark a milestone as completed
+  const handleCompleteMilestone = (index: number) => {
+    // Clone the milestones array
+    const updatedMilestones = [...milestones];
+
+    // Update the 'completed' status of the specific milestone
+    updatedMilestones[index].completed = !milestones[index].completed;
+
+    // Update the state with the modified milestones
+    setMilestones(updatedMilestones);
+  };
+
+  return (
+    <Card style={styles.goalCard}>
+      <Card.Content>
+        <Text variant="titleLarge">{props.goal.goal}</Text>
+        <Divider />
+      </Card.Content>
+
+      <Card.Content>
+        <Text>Progress</Text>
+        <ProgressBar
+          progress={completedMilestonesCount / milestones.length}
+          color="blue"
+        />
+      </Card.Content>
+
+      <Card.Content>
+        <List.Section>
+          <List.Accordion
+            title="Milestones"
+            left={(accordionProps) => (
+              <List.Icon {...accordionProps} icon="equal" />
+            )}
+          >
+            {milestones.map((milestone, index) => (
+              <View
+                key={index} // Use the index as a key, or a unique identifier if available
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <List.Item title={milestone.milestone} />
+                <Chip
+                  icon={milestone.completed ? "check" : "information"}
+                  onPress={() => handleCompleteMilestone(index)}
+                  mode={milestone.completed ? "flat" : "outlined"}
+                >
+                  {milestone.completed ? "Completed" : "Complete"}
+                </Chip>
+              </View>
+            ))}
+          </List.Accordion>
+        </List.Section>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text>{props.goal.date?.toDateString()}</Text>
+          <Text>{props.goal.reward}</Text>
+        </View>
+      </Card.Content>
+
       <Divider />
-    </Card.Content>
-    <Card.Content>
-      <Text>Progress</Text>
-      <ProgressBar progress={0.5} color={MD3Colors.primary50} />
-    </Card.Content>
+    </Card>
+  );
+};
 
-    <Card.Content>
-      <List.Section>
-        <List.Accordion
-          title="Milestones"
-          left={(props) => <List.Icon {...props} icon="equal" />}
-        >
-          {props.goal.milestones.map((milestone) => (
-            <List.Item title={milestone.milestone} />
-          ))}
-        </List.Accordion>
-      </List.Section>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text>{props.goal.date?.toDateString()}</Text>
-        <Text>{props.goal.reward}</Text>
-      </View>
-    </Card.Content>
-
-    <Divider />
-  </Card>
-);
 export default GoalCard;
 
 const styles = StyleSheet.create({
