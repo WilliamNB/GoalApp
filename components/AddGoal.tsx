@@ -9,6 +9,7 @@ import {
   enGB,
   registerTranslation,
 } from "react-native-paper-dates";
+import { Goal } from "@/classes/Goal";
 registerTranslation("en", enGB);
 
 interface AddGoalProps {
@@ -41,6 +42,8 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
     },
   });
   const onSubmit = (data: any) => {
+    console.log("on submit");
+    data.goalDate = date;
     console.log(data);
     addGoal(data);
     onDismiss();
