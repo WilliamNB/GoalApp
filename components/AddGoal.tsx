@@ -9,7 +9,6 @@ import {
   enGB,
   registerTranslation,
 } from "react-native-paper-dates";
-import { Goal } from "@/classes/Goal";
 registerTranslation("en", enGB);
 
 interface AddGoalProps {
@@ -103,6 +102,10 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           name="goal"
           rules={{ required: true }}
         />
+        {errors.goal && (
+          <Text style={styles.validationErrorText}>This is required.</Text>
+        )}
+
         <Text style={styles.label}>Milestones</Text>
         {fields.map((field, index) => (
           <View key={field.id} style={styles.milestoneContainer}>
@@ -208,6 +211,9 @@ const styles = StyleSheet.create({
   },
   marginTop: {
     marginTop: 12,
+  },
+  validationErrorText: {
+    color: "red",
   },
 });
 

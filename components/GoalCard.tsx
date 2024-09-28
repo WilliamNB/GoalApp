@@ -12,6 +12,7 @@ import {
 import { GoalProps } from "@/classes/Goal";
 import { View } from "react-native";
 import { Milestone } from "@/classes/Milestone";
+import { formatGoalDate } from "@/functions/FormatGoalDate";
 
 const GoalCard: React.FC<GoalProps> = (props) => {
   // State to track the milestones
@@ -33,10 +34,19 @@ const GoalCard: React.FC<GoalProps> = (props) => {
 
     // Update the state with the modified milestones
     setMilestones(updatedMilestones);
+    checkGoalCompleted();
+  };
+
+  const checkGoalCompleted = () => {
+    milestones.every((milestone) => milestone.completed)
+      ? (props.goal.completed = true)
+      : (props.goal.completed = false);
   };
 
   return (
-    <Card style={styles.goalCard}>
+    <Card
+      style={props.goal.completed ? styles.goalCardCompleted : styles.goalCard}
+    >
       <Card.Content>
         <Text variant="titleLarge">{props.goal.goal}</Text>
         <Divider />
@@ -54,6 +64,11 @@ const GoalCard: React.FC<GoalProps> = (props) => {
         <List.Section>
           <List.Accordion
             title="Milestones"
+            style={
+              props.goal.completed
+                ? styles.milestonesCompleted
+                : styles.milestones
+            }
             left={(accordionProps) => (
               <List.Icon {...accordionProps} icon="equal" />
             )}
@@ -64,7 +79,7 @@ const GoalCard: React.FC<GoalProps> = (props) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                 }}
               >
                 <List.Item title={milestone.milestone} />
@@ -81,7 +96,7 @@ const GoalCard: React.FC<GoalProps> = (props) => {
         </List.Section>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text>{props.goal.date?.toDateString()}</Text>
+          <Text>{formatGoalDate(props.goal.date)}</Text>
           <Text>{props.goal.reward}</Text>
         </View>
       </Card.Content>
@@ -97,4 +112,12 @@ const styles = StyleSheet.create({
   goalCard: {
     marginBottom: 16,
   },
+  goalCardCompleted: {
+    marginBottom: 16,
+    backgroundColor: "#dcf5d7",
+  },
+  milestonesCompleted: {
+    backgroundColor: "#dcf5d7",
+  },
+  milestones: {},
 });
