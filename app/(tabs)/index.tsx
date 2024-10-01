@@ -11,7 +11,6 @@ import GoalList from "@/components/GoalList";
 import { DatabaseManager } from "@/database/DatabaseManager";
 
 export default function HomeScreen() {
-  //const username = await AsyncStorage.getItem("test");
   const [visible, setVisible] = React.useState(false);
   const [goals, setGoals] = React.useState<Goal[]>([]);
 
@@ -19,6 +18,7 @@ export default function HomeScreen() {
   const hideModal = () => setVisible(false);
 
   useEffect(() => {
+    //dbManager.clearStorage();
     getGoalsFromStorage(); // Fetch and load the goal when the component is mounted
   }, []);
 

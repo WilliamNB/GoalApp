@@ -1,4 +1,4 @@
 export type Milestone = {
-  milestone: string;
+  milestone: string | undefined;
   completed: boolean;
 };

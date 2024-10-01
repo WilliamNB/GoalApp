@@ -9,6 +9,7 @@ import {
   enGB,
   registerTranslation,
 } from "react-native-paper-dates";
+import { processMilestones } from "@/functions/ProcessMilestones";
 registerTranslation("en", enGB);
 
 interface AddGoalProps {
@@ -27,6 +28,11 @@ interface UseFormInputs {
 const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   const containerStyle = { backgroundColor: "white", padding: 20 };
 
+  const handleDismiss = () => {
+    setDate(undefined);
+    onDismiss();
+  };
+
   const {
     handleSubmit,
     control,
@@ -35,7 +41,7 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   } = useForm<UseFormInputs>({
     defaultValues: {
       goal: "",
-      milestones: [{ milestone: "", completed: false }],
+      milestones: undefined,
       reward: "",
       goalDate: new Date(),
     },
@@ -43,9 +49,11 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   const onSubmit = (data: any) => {
     console.log("on submit");
     data.goalDate = date;
+    data.milestones = processMilestones(data.milestones);
     console.log(data);
+    console.log("test");
     addGoal(data);
-    onDismiss();
+    handleDismiss();
     reset();
   };
 
@@ -63,11 +71,12 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [open, setOpen] = React.useState(false);
 
-  const onDismissSingle = React.useCallback(() => {
+  const onDismissDatePicker = React.useCallback(() => {
     setOpen(false);
+    setDate(undefined);
   }, [setOpen]);
 
-  const onConfirmSingle = React.useCallback(
+  const onConfirmDatePicker = React.useCallback(
     (params: any) => {
       setOpen(false);
       setDate(params.date);
@@ -84,7 +93,7 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
     <Portal>
       <Modal
         visible={visible}
-        onDismiss={onDismiss}
+        onDismiss={handleDismiss}
         contentContainerStyle={containerStyle}
       >
         {/* <View style={styles.container}> */}
@@ -142,7 +151,12 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           rules={{ required: false }}
         />
         <Text style={styles.label}>Select a date to achieve the goal</Text>
-        <Button onPress={() => setOpen(true)} title={displayDate}></Button>
+        <Button
+          onPress={() => {
+            setOpen(true);
+          }}
+          title={displayDate}
+        ></Button>
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -150,9 +164,9 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
               locale="en"
               mode="single"
               visible={open}
-              onDismiss={onDismissSingle}
+              onDismiss={onDismissDatePicker}
               date={date}
-              onConfirm={onConfirmSingle}
+              onConfirm={onConfirmDatePicker}
             />
           )}
           name="goalDate"

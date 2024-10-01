@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: 32,
+    padding: 16,
     gap: 16,
     overflow: "hidden",
   },

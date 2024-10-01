@@ -2,7 +2,7 @@ import { Milestone } from "./Milestone";
 
 export type Goal = {
   goal: string;
-  milestones: Milestone[];
+  milestones?: Milestone[];
   date?: Date;
   reward?: string;
   completed: boolean;

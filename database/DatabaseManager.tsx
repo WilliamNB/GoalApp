@@ -56,4 +56,14 @@ export class DatabaseManager {
     }
     return null;
   }
+
+  // Clear all entries from AsyncStorage
+  async clearStorage(): Promise<void> {
+    try {
+      await AsyncStorage.clear();
+      console.log("All data cleared from AsyncStorage.");
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+    }
+  }
 }
