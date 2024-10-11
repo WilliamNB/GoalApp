@@ -30,6 +30,7 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
 
   const handleDismiss = () => {
     setDate(undefined);
+    reset();
     onDismiss();
   };
 
@@ -150,6 +151,7 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
           name="reward"
           rules={{ required: false }}
         />
+
         <Text style={styles.label}>Select a date to achieve the goal</Text>
         <Button
           onPress={() => {
@@ -175,7 +177,6 @@ const AddGoal: React.FC<AddGoalProps> = ({ visible, onDismiss, addGoal }) => {
         <View style={styles.marginTop}></View>
         {/*cant add style to button so need to add spacing this way */}
         <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-        {/* </View> */}
       </Modal>
     </Portal>
   );

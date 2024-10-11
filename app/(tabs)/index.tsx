@@ -73,9 +73,6 @@ export default function HomeScreen() {
         addGoal={createNewGoal}
       />
       <FabComponent onPress={showModal} />
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">In Dev !!!</ThemedText>
-      </ThemedView>
     </FullScreenView>
   );
 }

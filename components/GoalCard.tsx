@@ -79,24 +79,13 @@ const GoalCard: React.FC<GoalProps> = (props) => {
       return false;
     }
     const today = new Date();
-    // Reset today's time to 00:00:00 for comparison purposes
     today.setHours(0, 0, 0, 0);
     const normalizedInputDate = new Date(inputDate);
-    // Reset inputDate's time to 00:00:00
     normalizedInputDate.setHours(0, 0, 0, 0);
 
     // Compare the two dates (ignoring time)
     return normalizedInputDate < today;
   };
-
-  // const getGoalCardStyle = (): object => {
-  //   if (goal.completed) {
-  //     return styles.goalCardCompleted;
-  //   }
-  //   return isDateBeforeToday(goal.date)
-  //     ? styles.goalCardBehind
-  //     : styles.goalCard;
-  // };
 
   return (
     <Card style={goalStyle}>
