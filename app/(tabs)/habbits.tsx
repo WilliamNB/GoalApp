@@ -3,43 +3,92 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import FullScreenView from "@/components/FullScreen";
 import HabitList from "@/components/HabitList";
-import { Cadence, Habit } from "@/classes/Habit";
+import { Cadence, Habit, HabitHistory } from "@/classes/Habit";
 import FabComponent from "@/components/paper-components/FabComponent";
-import React from "react";
+import React, { useEffect } from "react";
 import AddHabit from "@/components/AddHabit";
 import { DatabaseManager } from "@/database/DatabaseManager";
+import HabitDisplay from "@/components/HabitDisplay";
 
 export default function TabTwoScreen() {
   const [visible, setVisible] = React.useState(false);
+  const [habits, setHabits] = React.useState<Habit[]>([]);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
-  const habit1: Habit = {
-    habit: "test habit",
-    cadence: Cadence.Weekly,
-    isContinuous: false,
-    frequency: 4,
-    endDate: new Date(),
-  };
+  useEffect(() => {
+    //dbManager.clearStorage();
+    getHabitsFromStorage(); // Fetch and load the habits when the component is mounted
+  }, []);
 
-  const [habits, setHabits] = React.useState<Habit[]>([habit1]);
+  useEffect(() => {
+    console.log("Habiits have changed ", habits);
+  }, [habits]);
 
   const dbManager = new DatabaseManager();
 
   const createNewHabit = async (data: any) => {
-    console.log("create habit", data);
+    console.log("habbits ", habits);
+    console.log("create habit data ", data);
+
     const habit: Habit = {
       habit: data.habit,
       cadence: data.cadence,
       isContinuous: data.isContinuous,
       frequency: data.frequency,
       endDate: data.endDate,
+      habitHistory: [
+        {
+          date: new Date(), // Set to current date or any specific date
+          completed: false,
+        },
+      ],
     };
-    setHabits([...habits, habit]);
+
+    console.log("habit ", habit);
+    //setHabits([...habits, habit]);
+    setHabits((prevHabits) => [
+      ...prevHabits,
+      {
+        ...habit,
+        habitHistory: [
+          ...habit.habitHistory, // If habit already has a history, preserve it
+          {
+            date: new Date(),
+            completed: false,
+          },
+        ],
+      },
+    ]);
+
+    console.log("habbits ", habits);
+
+    try {
+      await dbManager.setHabit(habit); // Save the new goal to AsyncStorage
+      console.log("Habit successfully saved to AsyncStorage.", habit);
+    } catch (error) {
+      console.error("Failed to save goal:", error);
+    }
+  };
+
+  const getHabitsFromStorage = async () => {
+    let habits: Habit[] | null;
+    try {
+      habits = await dbManager.getAllHabits(); // Save the new goal to AsyncStorage
+      if (habits) {
+        setHabits(habits);
+        console.log("habits successfully loaded and state updated.");
+      } else {
+        console.log("No habits found in storage.");
+      }
+    } catch (error) {
+      console.error("Failed to retrieve habit:", error);
+    }
   };
 
   return (
     <FullScreenView>
+      <HabitDisplay habits={habits} setHabits={setHabits}></HabitDisplay>
       <View style={styles.container}>
         <HabitList habits={habits}></HabitList>
         <FabComponent onPress={showModal} />

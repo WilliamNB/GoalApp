@@ -10,7 +10,7 @@ import {
   enGB,
   registerTranslation,
 } from "react-native-paper-dates";
-import { Cadence, Duration } from "@/classes/Habit";
+import { Cadence, Duration, HabitHistory } from "@/classes/Habit";
 registerTranslation("en", enGB);
 
 interface AddHabitProps {
@@ -27,6 +27,7 @@ interface UseFormInputs {
   duration?: Duration;
   frequency: number;
   endDate?: Date;
+  habitHistory: HabitHistory;
 }
 
 const calculateEndDate = (duration: Duration): Date => {
@@ -105,11 +106,16 @@ const AddHabit: React.FC<AddHabitProps> = ({
     },
   });
 
+  const displayDate = date ? date.toLocaleDateString() : "Select a Date";
+
   const onSubmit = (data: any) => {
     console.log("on submit");
-    console.log(data);
-    // data.goalDate = date;
-    // data.milestones = processMilestones(data.milestones);
+    data.habitHistory = [
+      {
+        date: new Date(), // Set to current date or any specific date
+        completed: false,
+      },
+    ];
     console.log(data);
     addHabit(data);
     handleDismiss();
@@ -263,7 +269,6 @@ const AddHabit: React.FC<AddHabitProps> = ({
                     setValue("endDate", newEndDate); // Use setValue to store the calculated
                   }}
                 >
-                  <Picker.Item label="Options" />
                   <Picker.Item label="1 Month" value={Duration.M1} />
                   <Picker.Item label="3 Months" value={Duration.M3} />
                   <Picker.Item label="6 Months" value={Duration.M6} />
@@ -282,7 +287,7 @@ const AddHabit: React.FC<AddHabitProps> = ({
               onPress={() => {
                 setOpen(true);
               }}
-              title={"end date"}
+              title={displayDate}
             ></Button>
             <Controller
               control={control}

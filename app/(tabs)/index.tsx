@@ -39,8 +39,9 @@ export default function HomeScreen() {
     };
 
     console.log(goal);
+    console.log("goals", goals);
     setGoals([...goals, goal]);
-
+    console.log("goals", goals);
     try {
       await dbManager.setGoal(goal); // Save the new goal to AsyncStorage
       console.log("Goal successfully saved to AsyncStorage.");
