@@ -16,6 +16,7 @@ const HabitDisplay: React.FC<HabitListProps> = ({ habits, setHabits }) => {
 
   const dailyHabits = habits.filter((habit) => habit.cadence == Cadence.Daily);
   console.log("daily habits", dailyHabits);
+
   const weeklyHabits = habits.filter(
     (habit) => habit.cadence == Cadence.Weekly
   );
@@ -40,6 +41,8 @@ const HabitDisplay: React.FC<HabitListProps> = ({ habits, setHabits }) => {
         : habit
     );
 
+    console.log("updated habits, ", updatedHabits);
+
     // Update the habits state
     setHabits(updatedHabits);
   };
@@ -53,12 +56,12 @@ const HabitDisplay: React.FC<HabitListProps> = ({ habits, setHabits }) => {
             <Text key={habit.habit}>{habit.habit}</Text>
             <Chip
               icon={
-                habit.habitHistory.pop()?.completed ? "check" : "information"
+                habit.habitHistory.at(-1)?.completed ? "check" : "information"
               }
               onPress={() => handleCompleteHabit(habit.habit)}
-              mode={habit.habitHistory.pop()?.completed ? "flat" : "outlined"}
+              mode={habit.habitHistory.at(-1)?.completed ? "flat" : "outlined"}
             >
-              {habit.habitHistory.pop()?.completed ? "Completed" : "Complete"}
+              {habit.habitHistory.at(-1)?.completed ? "Completed" : "Complete"}
             </Chip>
           </View>
         ))}
